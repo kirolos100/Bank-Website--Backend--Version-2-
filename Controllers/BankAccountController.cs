@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using tea_bank.DTOs;
@@ -17,13 +17,13 @@ namespace Tea_Bank_Backend.Controllers
         {
             _bankAccService = bankAccService;
         }
-        [HttpGet,Authorize]
+        [HttpGet, Authorize]
         public async Task<ActionResult<List<BankAccount>>> GetAllAccounts()
         {
             return await _bankAccService.GetAllAccounts();
         }
 
-        [HttpGet("{Get by id}"), Authorize]
+        [HttpGet("{id}"), Authorize]
         public async Task<ActionResult<BankAccount>> GetAccountById(int id)
         {
             var result = await _bankAccService.GetAccountById(id);
@@ -38,14 +38,26 @@ namespace Tea_Bank_Backend.Controllers
         [HttpPost, Authorize]
         public async Task<ActionResult<List<BankAccount>>> AddAccount(BankAccDTO bankAcc)
         {
-            var result=  await _bankAccService.AddAccount(bankAcc);
+            var result = await _bankAccService.AddAccount(bankAcc);
             return Ok(result);
         }
 
-        [HttpDelete("{Delete by id}"), Authorize]
+        [HttpDelete("{id}"), Authorize]
         public async Task<ActionResult<List<BankAccount>>> DeleteAccount(int id)
         {
             var result = await _bankAccService.DeleteAccount(id);
+            if (result is null)
+            {
+                return NotFound("Bank Account not Found.");
+            }
+
+            return Ok(result);
+        }
+        // update account
+        [HttpPut("{id}"), Authorize]
+        public async Task<ActionResult<List<BankAccount>>> UpdateAccount(int id, BankAccDTO bankAcc)
+        {
+            var result = await _bankAccService.UpdateAccount(id, bankAcc);
             if (result is null)
             {
                 return NotFound("Bank Account not Found.");

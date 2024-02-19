@@ -10,7 +10,7 @@ using Tea_Bank_Backend.Services;
 namespace Tea_Bank_Backend.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController,Authorize]
+    [ApiController, Authorize]
     public class ReservationController : ControllerBase
     {
 
@@ -22,12 +22,12 @@ namespace Tea_Bank_Backend.Controllers
             _reservation = reservation;
         }
 
-        [HttpGet("AllReservations"),Authorize]
+        [HttpGet("AllReservations"), Authorize]
         public async Task<ActionResult<List<Reservation>>> GetALLReservations()
         {
             return await _reservation.GetALLReservations();
         }
-        [HttpGet("getById/{id}")]
+        [HttpGet("getById/{id}"), Authorize]
         public async Task<ActionResult<Reservation>> GetReservationById(int id)
         {
             var result = await _reservation.GetReservationByID(id);
@@ -38,14 +38,20 @@ namespace Tea_Bank_Backend.Controllers
 
             return Ok(result);
         }
-        [HttpPost,Authorize]
+        [HttpPost, Authorize]
         public async Task<ActionResult<List<Reservation>>> ADDReservation(ReservationDTO reservation)
         {
-            var result = await _reservation.ADDReservation(reservation);
+            try
+            {
+                var result = await _reservation.AddReservation(reservation);
 
-            return Ok(result);
+                return Ok(result);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-        [HttpDelete("{id}"),Authorize]
+        [HttpDelete("{id}"), Authorize]
         public async Task<ActionResult<List<Reservation>>> DeleteReservation(int id)
         {
             var result = await _reservation.DeleteReservation(id);

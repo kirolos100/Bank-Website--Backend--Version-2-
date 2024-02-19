@@ -1,4 +1,4 @@
-using tea_bank.Models;
+﻿using tea_bank.Models;
 
 namespace tea_bank.DTOs
 {
@@ -7,7 +7,7 @@ namespace tea_bank.DTOs
 
         public int Id { get; set; }
 
-        public int NationalId { get; set; }
+        public long NationalId { get; set; }
 
         public string FirstName { get; set; }
 
@@ -18,8 +18,13 @@ namespace tea_bank.DTOs
         public string PhoneNumber { get; set; }
 
         public string Password { get; set; } = string.Empty;
-        public List<BankAccount> BankAccounts { get; set; }
 
-        public List<Reservation>? Reservations { get; set; }
+        //public byte[] PasswordHash { get; set; }
+
+        //public byte[] PasswordSalt { get; set; }
+
+        public List<BankAccDTO> BankAccounts { get; set; }
+
+        //public List<Reservation>? Reservations { get; set; }
     }
 }
